@@ -39,7 +39,7 @@ namespace TodoApp.Application.Services
 
             return _mapper.Map<IEnumerable<TodoDto>>(todos);
         }
-        public async Task<List<TodoDto>> GetAll(string status)
+        public async Task<IEnumerable<TodoDto>> GetAll(string status)
         {
             var todos = await _todoRepository.GetAll();
 
@@ -49,15 +49,15 @@ namespace TodoApp.Application.Services
                 todos = todos.Where(t => t.Status == statusEnum).ToList();
             }
 
-            return _mapper.Map<List<TodoDto>>(todos);
+            return _mapper.Map<IEnumerable<TodoDto>>(todos);
         }
         public async Task<int> Add(TodoDto todoDto)
         {
-            var todo = _mapper.Map<Todo>(todoDto);
-            todo.Id = Guid.NewGuid();
+            var todo = _mapper.Map<Todo>(todoDto);            
             if (todo == null)
                 throw new Exception("Invalid Todo data");
-
+            todo.Id = Guid.NewGuid();
+            todo.CreatedDate = DateTime.Now;
             await _todoRepository.Add(todo);
             return await _todoRepository.SaveChanges();
         }
@@ -68,7 +68,8 @@ namespace TodoApp.Application.Services
             if (existingTodo == null)
                 throw new Exception("Todo not found");
 
-            var updatedToDo = _mapper.Map(todoDto, existingTodo); 
+            var updatedToDo = _mapper.Map(todoDto, existingTodo);
+            updatedToDo.LastModifiedDate = DateTime.Now;
             await _todoRepository.Update(updatedToDo); 
             return await _todoRepository.SaveChanges();
         }

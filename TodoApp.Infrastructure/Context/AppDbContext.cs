@@ -23,7 +23,6 @@ namespace TodoApp.Infrastructure.Context
                       .HasMaxLength(100);
 
                 entity.Property(e => e.Description)
-                     .IsRequired()
                      .HasMaxLength(250);
 
                 entity.Property(e => e.Status)
