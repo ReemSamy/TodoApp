@@ -21,6 +21,7 @@ namespace TodoApp.API.Controllers
             _todoService = todoService;
         }
         #endregion
+
         #region Methods
         [HttpGet("GetAll")]
         public async Task<ActionResult> GetAll()

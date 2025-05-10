@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TodoApp.Application.DTOs;
 using TodoApp.Application.Interfaces;
@@ -12,12 +13,15 @@ namespace TodoApp.Web.Controllers
         #region Fields
         private readonly ITodoService _todoService;
         #endregion
+
         #region CTOR
         public ToDoController(ITodoService todoService)
         {
             _todoService = todoService;
         }
         #endregion
+
+        #region Actions
         public async Task<IActionResult> Index(TodoStatus? status)
         {
             if (status.HasValue)
@@ -31,14 +35,12 @@ namespace TodoApp.Web.Controllers
         public async Task<IActionResult> Details(string id)
         {
             if (string.IsNullOrEmpty(id))
-            {
                 return NotFound();
-            }
+
             var todo = await _todoService.Get(Guid.Parse(id));
             if (todo == null)
-            {
                 return NotFound();
-            }
+
             return View(todo);
         }
         public async Task<IActionResult> Create()
@@ -60,9 +62,8 @@ namespace TodoApp.Web.Controllers
         {
             var todo = await _todoService.Get(Guid.Parse(id));
             if (todo == null)
-            {
                 return NotFound();
-            }
+
             return View(todo); 
         }
         [HttpPost]
@@ -89,6 +90,7 @@ namespace TodoApp.Web.Controllers
 
             todo.Status = TodoStatus.Completed;
             await _todoService.Update((Guid)todo.Id, todo);
+
             return RedirectToAction(nameof(Index));
         }
         [HttpPost("ToDo/Delete/{id}")]
@@ -96,13 +98,11 @@ namespace TodoApp.Web.Controllers
         {
             var todo = await _todoService.Get(Guid.Parse(id));
             if (todo == null)
-            {
                 return NotFound();
-            }
 
             await _todoService.Delete(Guid.Parse(id));
-
             return RedirectToAction(nameof(Index)); 
         }
+        #endregion
     }
 }
