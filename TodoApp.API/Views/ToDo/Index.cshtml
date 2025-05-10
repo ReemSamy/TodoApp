@@ -1,0 +1,28 @@
+﻿@model IEnumerable<TodoApp.Application.DTOs.TodoDto>
+
+@{
+    ViewData["Title"] = "Todo List";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    @foreach (var todo in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@todo.Title</h5>
+                    <p class="card-text">@todo.Description</p>
+                    <p class="card-text"><strong>Status:</strong> @todo.Status</p>
+                    <p class="card-text"><strong>Priority:</strong> @todo.Priority</p>
+                    <p class="card-text"><strong>Due Date:</strong> @todo.DueDate?.ToString("yyyy-MM-dd")</p>
+                    <a href="@Url.Action("Edit", "Todo", new { id = todo.Id })" class="btn btn-primary">Edit</a>
+                    <a href="@Url.Action("Delete", "Todo", new { id = todo.Id })" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<a href="@Url.Action("Create", "Todo")" class="btn btn-success">Create New Todo</a>

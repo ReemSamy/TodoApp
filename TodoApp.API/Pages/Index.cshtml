@@ -1,0 +1,43 @@
+﻿@page
+@model TodoApp.API.Pages.IndexModel
+@{
+    ViewData["Title"] = "Todo List";
+}
+
+<div class="container mt-5">
+    <h2>@ViewData["Title"]</h2>
+
+    <!-- Todo List Filter -->
+    <div class="mt-3 mb-3">
+        <label for="statusFilter">Filter by Status: </label>
+        <select id="statusFilter" class="form-control w-auto" onchange="filterTodos()">
+            <option value="">All</option>
+            <option value="Pending">Pending</option>
+            <option value="InProgress">In Progress</option>
+            <option value="Completed">Completed</option>
+        </select>
+    </div>
+
+    <!-- Add Todo Button -->
+    <a href="/Create" class="btn btn-primary mb-3">Add Todo</a>
+
+    <!-- Todo List -->
+    <div class="row">
+        @foreach (var todo in Model.Todos)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>@todo.Title</h5>
+                        <p>@todo.Description</p>
+                        <p><strong>Status:</strong> @todo.Status</p>
+                        <p><strong>Priority:</strong> @todo.Priority</p>
+                        <p><strong>Due Date:</strong> @todo.DueDate?.ToString("yyyy-MM-dd")</p>
+                        <a href="/Edit/@todo.Id" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="/Delete/@todo.Id" class="btn btn-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
