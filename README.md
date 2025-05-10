@@ -14,7 +14,6 @@ This is a simple Todo Management application built using **ASP.NET Core**, **Ent
 3. **the connection string:**
 - Open `appsettings.json` in the `*TodoApp.API` project.
 - the default connection string call deployed DB for Todo app Hosted On azure Server :(dbapplications).
-- 
 4. **Run the application:**
   
 5. **Access the End Points:**
